@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<window>
+<backgroundcolor>0x00000000</backgroundcolor>
+	<controls>
+		<control type="image" id="1">
+			<description>Background</description>
+			<posx>0</posx>
+			<posy>0</posy>
+			<width>1920</width>
+			<height>1080</height>
+			<fadetime>950</fadetime>
+			<aspectratio>scale</aspectratio>
+			<texture>black1080.jpg</texture>
+<!-- 			<animation effect="fade" start="0" end="100" time="500">WindowOpen</animation> -->
+		</control>
+		<control type="image" id="101">
+			<description>LeftTop</description>
+<!--		Position and size will be defined in the python script
+			<posx>0</posx>
+			<posy>0</posy>
+ 			<width>400</width> 
+ 			<height>225</height>-->
+			<fadetime>950</fadetime>
+			<aspectratio>keep</aspectratio>
+		</control>
+		<control type="image" id="102">
+			<description>CenterTop</description>
+			<fadetime>950</fadetime>
+			<aspectratio>keep</aspectratio>
+		</control>		
+		<control type="image" id="103">
+			<description>RightTop</description>
+			<fadetime>950</fadetime>
+			<aspectratio>keep</aspectratio>
+		</control>
+		<control type="image" id="104">
+			<fadetime>950</fadetime>
+			<aspectratio>keep</aspectratio>
+		</control>		
+		<control type="image" id="105">
+			<fadetime>950</fadetime>
+			<aspectratio>keep</aspectratio>
+		</control>		
+		<control type="image" id="106">
+			<fadetime>950</fadetime>
+			<aspectratio>keep</aspectratio>
+		</control>		
+		<control type="image" id="107">
+			<fadetime>950</fadetime>
+			<aspectratio>keep</aspectratio>
+		</control>		
+		<control type="image" id="108">
+			<fadetime>950</fadetime>
+			<aspectratio>keep</aspectratio>
+		</control>		
+		<control type="image" id="109">
+			<fadetime>950</fadetime>
+			<aspectratio>keep</aspectratio>
+		</control>		
+<!-- scaled image controls -->
+		<control type="image" id="201">
+			<description>LeftTop</description>
+			<fadetime>950</fadetime>
+			<aspectratio>scale</aspectratio>
+		</control>
+		<control type="image" id="202">
+			<description>CenterTop</description>
+			<fadetime>950</fadetime>
+			<aspectratio>scale</aspectratio>
+		</control>		
+		<control type="image" id="203">
+			<description>RightTop</description>
+			<fadetime>950</fadetime>
+			<aspectratio>scale</aspectratio>
+		</control>
+		<control type="image" id="204">
+			<fadetime>950</fadetime>
+			<aspectratio>scale</aspectratio>
+		</control>		
+		<control type="image" id="205">
+			<fadetime>950</fadetime>
+			<aspectratio>scale</aspectratio>
+		</control>		
+		<control type="image" id="206">
+			<fadetime>950</fadetime>
+			<aspectratio>scale</aspectratio>
+		</control>		
+		<control type="image" id="207">
+			<fadetime>950</fadetime>
+			<aspectratio>scale</aspectratio>
+		</control>		
+		<control type="image" id="208">
+			<fadetime>950</fadetime>
+			<aspectratio>scale</aspectratio>
+		</control>		
+		<control type="image" id="209">
+			<fadetime>950</fadetime>
+			<aspectratio>scale</aspectratio>
+		</control>		
+
+		</controls>
+</window>

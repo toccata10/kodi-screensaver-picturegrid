@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<addon id="screensaver.picturegrid"
+    name="Screensaver Picture Grid"
+    version="1.0.2"
+    provider-name="Toccata">
+  <requires>
+    <import addon="xbmc.python" version="3.0.0"/>
+  </requires>
+  <extension point="xbmc.ui.screensaver" library="default.py" />
+  <extension point="xbmc.addon.metadata">
+    <platform>all</platform>
+    <summary lang="en_GB">A screensaver that displays a grid of pictures. Grids can be 3x3, 2x2 or 1x1</summary>
+    <description lang="en_GB">A screensaver that displays a grid of pictures. Grids can be 3x3, 2x2 or 1x1</description>
+    <website>www.theaudiodb.com</website>
+    <email>unknown@kodi.tv</email>
+    <assets>
+        <icon>resources/icon.png</icon>
+        <screenshot>resources/screenshot-01.jpg</screenshot>
+        <screenshot>resources/screenshot-02.jpg</screenshot>
+    </assets>
+    <news>Initial release</news>
+    <source>https://github.com/todo</source>
+  </extension>
+</addon>

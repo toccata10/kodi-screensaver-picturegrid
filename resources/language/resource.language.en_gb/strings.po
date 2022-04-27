@@ -1,0 +1,97 @@
+# Kodi Media Center language file
+# Addon Name: Screensaver Picture Grid
+# Addon id: screensaver.picturegrid
+# Addon Provider: Toccata
+msgid ""
+msgstr ""
+"Project-Id-Version: Kodi add-ons\n"
+"Report-Msgid-Bugs-To: toccata\n"
+"POT-Creation-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: en_gb\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgctxt "Addon Summary"
+msgid "Screensaver that displays a grid of images"
+msgstr ""
+
+msgctxt "Addon Description"
+msgid "This screensaver will show you a grid (3x3, 2x2 or just 1 picture) of pictures. It can be configured to show your libraries music or video fanart, or a custom folder of images. If the grid doesn't display properly, you can adjust it by modifying the skin virtual resolution (based on 720p by default)."
+msgstr ""
+
+msgctxt "#30000"
+msgid "Source of slideshow images"
+msgstr ""
+
+msgctxt "#30001"
+msgid "Folder"
+msgstr ""
+
+msgctxt "#30002"
+msgid "Video Fanart"
+msgstr ""
+
+msgctxt "#30003"
+msgid "Music Fanart"
+msgstr ""
+
+msgctxt "#30004"
+msgid "Image Folder"
+msgstr ""
+
+msgctxt "#30006"
+msgid "Grid"
+msgstr ""
+
+msgctxt "#30007"
+msgid "1x1"
+msgstr ""
+
+msgctxt "#30008"
+msgid "2x2"
+msgstr ""
+
+msgctxt "#30009"
+msgid "3x3"
+msgstr ""
+
+msgctxt "#30010"
+msgid "Milli-seconds before a new image"
+msgstr ""
+
+msgctxt "#30011"
+msgid "Scale images fullscreen"
+msgstr ""
+
+msgctxt "#30016"
+msgid "Display images in random order"
+msgstr ""
+
+msgctxt "#30024"
+msgid "Configuration"
+msgstr ""
+
+msgctxt "#30030"
+msgid "Black Border Thickness"
+msgstr ""
+
+msgctxt "#30031"
+msgid "Skin Virtual Width"
+msgstr ""
+
+msgctxt "#30032"
+msgid "Skin Virtual Height"
+msgstr ""
+
+msgctxt "#30040"
+msgid "Keep Aspect Ratio"
+msgstr ""
+
+msgctxt "#30041"
+msgid "Adjust if the Grid doesn't fit your screen"
+msgstr ""
