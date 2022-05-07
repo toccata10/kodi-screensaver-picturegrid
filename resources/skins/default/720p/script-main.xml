@@ -98,8 +98,8 @@
 			<aspectratio>scale</aspectratio>
 		</control>	
 
-<!-- legends for commentaires.csv		 -->
-<!-- 		https://kodi.wiki/view/Button_control -->
+<!-- legends for commentaires.csv -->
+<!--https://kodi.wiki/view/Button_control -->
 		<control type="button" id="301">
 			<description>Comments are displayed as a label on a button</description>
 			<posx>0</posx>
