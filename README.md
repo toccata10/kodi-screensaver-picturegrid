@@ -16,11 +16,13 @@ Inspiration comes from the Multi Slideshow Screensaver created by sphere. See [t
 * And thanks to Ronie and its [screensaver.picture.slideshow](https://gitlab.com/ronie/screensaver.picture.slideshow) from which I learnt a lot a re-used some code.
 
 ## Installation
-You can copy the folder to your kodi installation. On Linux, it's `./kodi/addons`
+You can either download the latest release as a zip, then install it with `Settings>Addons>Install from ip File`
 
-This was tested only on Linux, on a laptop.
+Or you can copy the folder to your kodi installation. On Linux, it's `./kodi/addons`
 
-## Warnings
+This was tested only on Linux and Android.
+
+## Final Words
 * This is a hobby WIP project. Main goals are to learn kodi programming and to display my holliday pictures in a cool way. 
-* Exif orientation is probably missing.
+* Exif orientation is ignored for now.
 * I have some random slowdowns when used on my Video Fanarts collection, but I didn't spot the culprit yet.

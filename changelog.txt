@@ -1,0 +1,12 @@
+v1.0.3
+- added an option to randomly switch the display grid after a few pictures
+- added an option to display some comments on the picture. Comments have to be in a
+file named "commentaires.csv" located in the same folder as pictures. The format is:
+        relative_file_name, written comment.
+    Example:
+        IMG_20140823_113529.jpg, my wonderful comment
+This is a workaround for Google Photos not saving comments in the picture's exif
+but in a database (which can be converted to a csv file with the appropriate tool)
+
+v1.0.2
+- initial public release

@@ -67,6 +67,7 @@
 							<option label="30007">1</option>
 							<option label="30008">2</option>
 							<option label="30009">3</option>
+							<option label="30005">0</option>
 <!-- 							<option label="231">3</option> -->
 						</options>
 					</constraints>
@@ -80,6 +81,11 @@
 						<step>1</step>
 						<maximum>20</maximum>
 					</constraints>
+				</setting>
+				<setting help="" id="comments" label="30033" type="boolean">
+					<level>0</level>
+					<default>true</default>
+					<control type="toggle"/>
 				</setting>
 				<setting help="30041" id="skin_virtual_width" label="30031" type="integer">
 					<level>0</level>

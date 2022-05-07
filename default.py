@@ -19,9 +19,10 @@ import xbmcgui
 import xbmc
 import random
 import json
-#import os
 from utils import *
-import threading
+
+#for commentaires.csv file analysis
+import csv
 
 #img is the widget used to display the picture
 #picture is the image read from the disk
@@ -40,8 +41,8 @@ class Screensaver(xbmcgui.WindowXMLDialog):
             xbmc.log("ExitMonitor: sending exit_callback")
             self.exit_callback()
 
-    def onInit(self):
-        xbmc.log("2 Screensaver: onInit")
+    def onInit(self):        
+        xbmc.log("Picture Grid Screensaver: onInit")
         self.abort_requested = False
         self.slideshow_random = ADDON.getSettingBool("random")
         #type:0=video fanart;1=music fanarts;2=folder
@@ -54,17 +55,18 @@ class Screensaver(xbmcgui.WindowXMLDialog):
         self.tempo=ADDON.getSettingInt("time")
         #will be 3 for a 3x3 grid, 2 for a 2x2 grid and 1 for a single image display
         self.grid_size=ADDON.getSettingInt("grid")
+        #if we choose a random grid size, then we start with a 2x2 grid
+        if ADDON.getSettingInt("grid")==0:
+            self.grid_size=2        
         #keep aspect ratio or scale ?
         self.keepratio=ADDON.getSettingBool("keepratio")
+        #if there's a commentaires.csv file containing lines like:
+        #IMG_20140823_113529~01_DxO.jpg, my wonderful comment
+        self.display_comments = ADDON.getSettingBool("comments")
         #skin (or addon?) virtual resolution (there's no way in kodi to query this). All positions are related
         #to this, not to the actual screen size
         self.skin_virtual_width=ADDON.getSettingInt("skin_virtual_width")
         self.skin_virtual_height=ADDON.getSettingInt("skin_virtual_height")
-        self.img_width=int(self.skin_virtual_width/self.grid_size)-2*self.black_border
-        self.img_height=int(self.skin_virtual_height/self.grid_size)-2*self.black_border
-        #possible positions on the x and y axis for the images
-        self.posx=[0+self.black_border,int(self.skin_virtual_width/self.grid_size)+self.black_border,2*int(self.skin_virtual_width/self.grid_size)+self.black_border]
-        self.posy=[0+self.black_border,int(self.skin_virtual_height/self.grid_size)+self.black_border,2*int(self.skin_virtual_height/self.grid_size)+self.black_border]
         
         #We can use up to 9 pictures
         #control id are defined in resources/skins/default/720p/script-main.xml
@@ -89,77 +91,76 @@ class Screensaver(xbmcgui.WindowXMLDialog):
             self.img8 = self.getControl(209)
         #just to remember the syntax
         #self.img0.setVisible(False)
-        
-        if self.grid_size==3:
-            #0 1 2
-            #3 4 5
-            #6 7 8
-            self.img=[self.img0,self.img1,self.img2,self.img3,self.img4,self.img5,self.img6,self.img7,self.img8]
-            self.img_index_list=[0,1,2,3,4,5,6,7,8]
-        if self.grid_size==2:
-            #0 1
-            #2 3
-            self.img=[self.img0,self.img1,self.img2,self.img3]
-            self.img_index_list=[0,1,2,3]
-        if self.grid_size==1:
-            self.img=[self.img0]
-            self.img_index_list=[0]
+        #to display comments:
+        self.legend1=self.getControl(301)
+        self.legend1.setVisible(False)
         
         self.monitor = self.ExitMonitor(self.exit)
         self.start_slideshow()
         
-    def positions(self):
+    def grid_order(self):
+        """
+        calculates the possible positions on the x and y axis for the images
+        calculates the image sizes
+        creates the img_index_list with the reference to the image position
+        """
+        self.posx=[0+self.black_border,int(self.skin_virtual_width/self.grid_size)+self.black_border,2*int(self.skin_virtual_width/self.grid_size)+self.black_border]
+        self.posy=[0+self.black_border,int(self.skin_virtual_height/self.grid_size)+self.black_border,2*int(self.skin_virtual_height/self.grid_size)+self.black_border]
+        self.img_width=int(self.skin_virtual_width/self.grid_size)-2*self.black_border
+        self.img_height=int(self.skin_virtual_height/self.grid_size)-2*self.black_border
+
         if self.grid_size==3:
-            if self.img_index==0:
-                self.img_posx=self.posx[0]
-                self.img_posy=self.posy[0]
-            if self.img_index==1:
-                self.img_posx=self.posx[1]
-                self.img_posy=self.posy[0]
-            if self.img_index==2:
-                self.img_posx=self.posx[2]
-                self.img_posy=self.posy[0]
-            if self.img_index==3:
-                self.img_posx=self.posx[0]
-                self.img_posy=self.posy[1]
-            if self.img_index==4:
-                self.img_posx=self.posx[1]
-                self.img_posy=self.posy[1]
-            if self.img_index==5:
-                self.img_posx=self.posx[2]
-                self.img_posy=self.posy[1]
-            if self.img_index==6:
-                self.img_posx=self.posx[0]
-                self.img_posy=self.posy[2]
-            if self.img_index==7:
-                self.img_posx=self.posx[1]
-                self.img_posy=self.posy[2]
-            if self.img_index==8:
-                self.img_posx=self.posx[2]
-                self.img_posy=self.posy[2]
-
+        #0 1 2
+        #3 4 5
+        #6 7 8
+            self.img=[self.img0,self.img1,self.img2,self.img3,self.img4,self.img5,self.img6,self.img7,self.img8]
+            self.img_index_list=[0,1,2,3,4,5,6,7,8]
         if self.grid_size==2:
-            if self.img_index==0:
-                self.img_posx=self.posx[0]
-                self.img_posy=self.posy[0]
-            if self.img_index==1:
-                self.img_posx=self.posx[1]
-                self.img_posy=self.posy[0]
-            if self.img_index==2:
-                self.img_posx=self.posx[0]
-                self.img_posy=self.posy[1]
-            if self.img_index==3:
-                self.img_posx=self.posx[1]
-                self.img_posy=self.posy[1]
-
+        #0 1
+        #2 3
+            self.img=[self.img0,self.img1,self.img2,self.img3]
+            self.img_index_list=[0,1,2,3]
         if self.grid_size==1:
-                self.img_posx=self.posx[0]
-                self.img_posy=self.posy[0]
+            self.img=[self.img0]
+            self.img_index_list=[0]      
+        
+    def positions(self):
+        """
+        depending on the grid size, the picture of img_index will be displayed top right, or bottom right.
+        """
+        #the first 2 positions are independent of the grid size
+        if self.img_index==0:
+            self.img_posx,self.img_posy=self.posx[0],self.posy[0]
+        if self.img_index==1:
+            self.img_posx,self.img_posy=self.posx[1],self.posy[0]
+        
+        if self.grid_size==2:
+            if self.img_index==2:
+                self.img_posx,self.img_posy=self.posx[0],self.posy[1]
+            if self.img_index==3:
+                self.img_posx,self.img_posy=self.posx[1],self.posy[1]
+        
+        if self.grid_size==3:
+            if self.img_index==2:
+                self.img_posx,self.img_posy=self.posx[2],self.posy[0]
+            if self.img_index==3:
+                self.img_posx,self.img_posy=self.posx[0],self.posy[1]
+            if self.img_index==4:
+                self.img_posx,self.img_posy=self.posx[1],self.posy[1]
+            if self.img_index==5:
+                self.img_posx,self.img_posy=self.posx[2],self.posy[1]
+            if self.img_index==6:
+                self.img_posx,self.img_posy=self.posx[0],self.posy[2]
+            if self.img_index==7:
+                self.img_posx,self.img_posy=self.posx[1],self.posy[2]
+            if self.img_index==8:
+                self.img_posx,self.img_posy=self.posx[2],self.posy[2]
 
     def _get_items(self, update=False):
         #code from screensaver.picture.slideshow from ronie
         xbmc.log('slideshow type: %i' % self.slideshow_type)
-	    # check if we have an image folder, else fallback to video fanart
+        # check if we have an image folder, else fallback to video fanart
+        self.dict_from_csv = {} #for comments
         if self.slideshow_type == 2:
             hexfile = checksum(self.slideshow_path.encode('utf-8')) # check if path has changed, so we can create a new cache at startup
             xbmc.log('image path: %s' % self.slideshow_path)
@@ -174,6 +175,15 @@ class Screensaver(xbmcgui.WindowXMLDialog):
                 # delete empty cache file
                 if xbmcvfs.exists(CACHEFILE % hexfile):
                     xbmcvfs.delete(CACHEFILE % hexfile)
+            #comments from the file commentaires.csv            
+            self.comments_csv_path=self.slideshow_path+'commentaires.csv'            
+            #try:
+            if self.display_comments:
+                if xbmcvfs.exists(self.comments_csv_path):                
+                    with open(self.comments_csv_path,  encoding='utf-8',mode='r') as inp:
+                        reader = csv.reader(inp)
+                        self.dict_from_csv = {rows[0]:rows[1] for rows in reader}
+            
 	    # video fanart
         if self.slideshow_type == 0:
             methods = [('VideoLibrary.GetMovies', 'movies'), ('VideoLibrary.GetTVShows', 'tvshows')]
@@ -212,13 +222,12 @@ class Screensaver(xbmcgui.WindowXMLDialog):
         #find the locations (paths) of the pictures
         self._get_items(update=True)
         xbmc.log("starting slide show")
-        
+        #calculates positions, sizes, img_index_list depending on the grid_size
+        self.slideshow_init()
         #choose which image
         self.path_index=0
         self.path_index_max=len(self.paths)-1
-        #choose where to display this image
-        self.img_count=0
-        self.img_index_max=len(self.img_index_list)-1
+        self.nb_repetitions=1
         while not self.abort_requested:
             #picture path. We reshuffle if we're at the end
             self.picture_path=self.paths[self.path_index]
@@ -229,38 +238,88 @@ class Screensaver(xbmcgui.WindowXMLDialog):
                 if self.slideshow_random:
                     random.shuffle(self.paths)
             #position of the picture (topleft, middle center,...):
-            #the img_index_list is a shuffled list of the positions
+            #the img_index_list is a shuffled list of the positions [0,2,3,1] for example
             self.img_index=self.img_index_list[self.img_count]
             cur_img=self.img[self.img_index]
             self.positions()
+                        
             cur_img.setPosition(self.img_posx,self.img_posy)
             cur_img.setHeight(self.img_height)
             cur_img.setWidth(self.img_width)
             #If we don't want to use the cache
             #cur_img.setImage(picture_path,False)
             cur_img.setImage(self.picture_path)
+            cur_img.setVisible(True)
+            #display the legend if it is present in commentaires.commentaires.csv (only when we have 1 picture full screen)
+            if self.display_comments and (self.grid_size==1):
+                self.display_legend()
+            xbmc.sleep(self.tempo)
             #have we changed all the different pictures ? if yes, reshuffle
             if self.img_count<self.img_index_max:
                 self.img_count+=1
             else:
                 self.img_count=0
                 random.shuffle(self.img_index_list)
+            #random grid changes: every 12 or 24 or 36 pictures, we change the grid type
+            nb_pict_modulo=12
+            self.nb_pict_before_change=[1,nb_pict_modulo,2*nb_pict_modulo,3*nb_pict_modulo]
+            if (ADDON.getSettingInt("grid")==0) and (self.path_index%(self.nb_pict_before_change[self.grid_size])==0):
+                self.img_count=0
+                old_grid_size=self.grid_size
+                while old_grid_size==self.grid_size:
+                    self.grid_size=random.randint(1,3)
+                for widget in [self.img0,self.img1,self.img2,self.img3,self.img4,self.img5,self.img6,self.img7,self.img8]:
+                    widget.setVisible(False)
+                if self.grid_size==1:
+                    self.tempo=2*ADDON.getSettingInt("time")
+                else:
+                    self.tempo=ADDON.getSettingInt("time")
 
-            xbmc.sleep(self.tempo)
+                #now we re-initialise some parameters of the slideshow:
+                self.slideshow_init()
+                
+    def display_legend(self):
+        """
+        We can have some comments in the commentaires.csv file located in the same folder as pictures
+        The format is
+        relative_file_name, written comment. Example:
+        IMG_20140823_113529.jpg, my wonderful comment
+        This is a workaround for Google Photos not saving comments in the picture's exif
+        but in a database (which can be converted to a csv file with the appropriate tool)
+        """
+        self.legend1.setVisible(False)
+        self.legend1_label=self.dict_from_csv.get(os.path.basename(self.picture_path),"nothing")
+        self.legend1_width=len(self.legend1_label)*13
+        self.legend1_posx=int(self.skin_virtual_width/2-self.legend1_width/2)
+        self.legend1_posy=int(0.9*self.skin_virtual_height)
+        
+        if self.legend1_label!="nothing":
+            self.legend1.setLabel(self.legend1_label,textColor="0xFFFFFFFF")
+            self.legend1.setWidth(self.legend1_width)
+            self.legend1.setPosition(self.legend1_posx,self.legend1_posy)
+            self.legend1.setVisible(True)
+
+    def slideshow_init(self):
+        #calculates positions, sizes, img_index_list depending on the grid_size
+        self.grid_order()
+        random.shuffle(self.img_index_list)
+        ##choose where to display this image
+        self.img_count=0
+        self.img_index_max=len(self.img_index_list)-1
             
     def exit(self):
         self.abort_requested = True
-        xbmc.log("4 Screensaver: Exit requested")
+        xbmc.log("Picture Grid Screensaver: Exit requested")
         self.close()
 
 if __name__ == "__main__":
-    xbmc.log("1 Python Screensaver Started")
+    xbmc.log("Picture Grid Screensaver Main Started")
     screensaver_gui = Screensaver(
             "script-main.xml",
             __path__,
             "default",
         )
     screensaver_gui.doModal()
-    xbmc.log("5 Python Screensaver Exited")
+    xbmc.log("Picture Grid Screensaver Exited")
     del screensaver_gui
     sys.modules.clear()
