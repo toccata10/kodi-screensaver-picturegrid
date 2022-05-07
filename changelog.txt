@@ -1,3 +1,7 @@
+v1.0.5
+- reworked the commentaires.csv acces with xbmcvfs (virtual file system):
+it previously worked only locally, not if the files were stored on a smb nas
+
 v1.0.3
 - added an option to randomly switch the display grid after a few pictures
 - added an option to display some comments on the picture. Comments have to be in a
