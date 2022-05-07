@@ -21,9 +21,6 @@ import random
 import json
 from utils import *
 
-#for commentaires.csv file analysis
-import csv
-
 #img is the widget used to display the picture
 #picture is the image read from the disk
 
@@ -41,7 +38,7 @@ class Screensaver(xbmcgui.WindowXMLDialog):
             xbmc.log("ExitMonitor: sending exit_callback")
             self.exit_callback()
 
-    def onInit(self):        
+    def onInit(self):
         xbmc.log("Picture Grid Screensaver: onInit")
         self.abort_requested = False
         self.slideshow_random = ADDON.getSettingBool("random")
@@ -179,11 +176,15 @@ class Screensaver(xbmcgui.WindowXMLDialog):
             self.comments_csv_path=self.slideshow_path+'commentaires.csv'            
             #try:
             if self.display_comments:
-                if xbmcvfs.exists(self.comments_csv_path):                
-                    with open(self.comments_csv_path,  encoding='utf-8',mode='r') as inp:
-                        reader = csv.reader(inp)
-                        self.dict_from_csv = {rows[0]:rows[1] for rows in reader}
-            
+                #we can t just use the csv module from python, because we also need to acces smb files for example
+                #so we use xmbcvfs and convert manualy the csv to a dictionnary
+                if xbmcvfs.exists(self.comments_csv_path):
+                    with xbmcvfs.File(self.comments_csv_path) as inp:
+                        file1=inp.read()
+                        for item1 in file1.splitlines():
+                            i = item1.split(', ')
+                            self.dict_from_csv[i[0]] = i[1]
+                        
 	    # video fanart
         if self.slideshow_type == 0:
             methods = [('VideoLibrary.GetMovies', 'movies'), ('VideoLibrary.GetTVShows', 'tvshows')]
@@ -289,7 +290,7 @@ class Screensaver(xbmcgui.WindowXMLDialog):
         """
         self.legend1.setVisible(False)
         self.legend1_label=self.dict_from_csv.get(os.path.basename(self.picture_path),"nothing")
-        self.legend1_width=len(self.legend1_label)*13
+        self.legend1_width=(len(self.legend1_label)+2)*13
         self.legend1_posx=int(self.skin_virtual_width/2-self.legend1_width/2)
         self.legend1_posy=int(0.9*self.skin_virtual_height)
         
