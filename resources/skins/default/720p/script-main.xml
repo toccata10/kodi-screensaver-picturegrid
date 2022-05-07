@@ -96,7 +96,43 @@
 		<control type="image" id="209">
 			<fadetime>950</fadetime>
 			<aspectratio>scale</aspectratio>
-		</control>		
+		</control>	
 
+<!-- legends for commentaires.csv		 -->
+		<!--			<control type="textbox" id="301">
+				<description>Hour</description>
+				<posx>60</posx>
+				<posy>10</posy>
+				<width>120</width>
+				<height>65</height>
+				<textcolor>FFFF0000</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<textcolor>$INFO[Control.GetLabel(30105)]</textcolor>
+				<shadowcolor>$INFO[Control.GetLabel(30112)]</shadowcolor>
+				<colordiffuse>00000000</colordiffuse>
+				<align>center</align>
+				<aligny>center</aligny>				
+				<label></label>
+				<texture>black1080.jpg</texture>
+ 				<font>WeatherTemp</font> 
+			</control>-->
+<!-- 		https://kodi.wiki/view/Button_control -->
+					<control type="button" id="301">
+				<description>Hour</description>
+				<posx>0</posx>
+				<posy>90%</posy>
+				<width>100%</width>
+				<height>30</height>
+				<textcolor>FFFF0000</textcolor>
+				<shadowcolor>FF000000</shadowcolor>
+				<font>font14</font>
+		
+				<align>center</align>
+				<aligny>center</aligny>				
+				<label></label>
+				<texturefocus colordiffuse="FFFFFFFF">white_opacity50.png</texturefocus>
+      <texturenofocus colordiffuse="FFFFFFFF">white_opacity50.png</texturenofocus>
+			
+			</control> 
 		</controls>
 </window>

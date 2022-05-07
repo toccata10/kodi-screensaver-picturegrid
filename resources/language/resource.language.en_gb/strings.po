@@ -60,6 +60,10 @@ msgctxt "#30009"
 msgid "3x3"
 msgstr ""
 
+msgctxt "#30005"
+msgid "Random Grid"
+msgstr ""
+
 msgctxt "#30010"
 msgid "Milli-seconds before a new image"
 msgstr ""
@@ -86,6 +90,10 @@ msgstr ""
 
 msgctxt "#30032"
 msgid "Skin Virtual Height"
+msgstr ""
+
+msgctxt "#30033"
+msgid "Display Comments"
 msgstr ""
 
 msgctxt "#30040"
