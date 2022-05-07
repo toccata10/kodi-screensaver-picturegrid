@@ -100,20 +100,20 @@
 
 <!-- legends for commentaires.csv		 -->
 <!-- 		https://kodi.wiki/view/Button_control -->
-			<control type="button" id="301">
-				<description>Comment as the text on a Button<description>
-				<posx>0</posx>
-				<posy>90%</posy>
-				<width>100%</width>
-				<height>30</height>
-				<textcolor>FFFF0000</textcolor>
-				<shadowcolor>FF000000</shadowcolor>
-				<font>font14</font>		
-				<align>center</align>
-				<aligny>center</aligny>
-				<label></label>
-				<texturefocus colordiffuse="FFFFFFFF">white_opacity50.png</texturefocus>
-				<texturenofocus colordiffuse="FFFFFFFF">white_opacity50.png</texturenofocus>			
-			</control> 
-		</controls>
+		<control type="button" id="301">
+			<description>Comments are displayed as a label on a button</description>
+			<posx>0</posx>
+			<posy>90%</posy>
+			<width>100%</width>
+			<height>30</height>
+			<textcolor>FFFF0000</textcolor>
+			<shadowcolor>FF000000</shadowcolor>
+			<font>font14</font>
+			<align>center</align>
+			<aligny>center</aligny>				
+			<label></label>
+			<texturefocus colordiffuse="FFFFFFFF">white_opacity50.png</texturefocus>
+			<texturenofocus colordiffuse="FFFFFFFF">white_opacity50.png</texturenofocus>
+		</control> 
+	</controls>
 </window>
