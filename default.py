@@ -20,6 +20,8 @@ import xbmc
 import random
 import json
 from utils import *
+#https://pypi.org/project/ExifRead/
+import exifread
 
 #img is the widget used to display the picture
 #picture is the image read from the disk
@@ -56,7 +58,7 @@ class Screensaver(xbmcgui.WindowXMLDialog):
         if ADDON.getSettingInt("grid")==0:
             self.grid_size=2        
         #keep aspect ratio or scale ?
-        self.keepratio=ADDON.getSettingBool("keepratio")
+        self.keepratio=ADDON.getSettingInt("keepratio")
         #if there's a commentaires.csv file containing lines like:
         #IMG_20140823_113529~01_DxO.jpg, my wonderful comment
         self.display_comments = ADDON.getSettingBool("comments")
@@ -250,6 +252,9 @@ class Screensaver(xbmcgui.WindowXMLDialog):
             #If we don't want to use the cache
             #cur_img.setImage(picture_path,False)
             cur_img.setImage(self.picture_path)
+            #exif test
+            self.exif_orientation(cur_img)            
+            
             cur_img.setVisible(True)
             #display the legend if it is present in commentaires.commentaires.csv (only when we have 1 picture full screen)
             if self.display_comments and (self.grid_size==1):
@@ -278,7 +283,45 @@ class Screensaver(xbmcgui.WindowXMLDialog):
 
                 #now we re-initialise some parameters of the slideshow:
                 self.slideshow_init()
-                
+    
+    def exif_orientation(self,cur_img):
+        """
+        From exiftool documentation
+        1 = Horizontal (normal)
+        2 = Mirror horizontal
+        3 = Rotate 180
+        4 = Mirror vertical
+        5 = Mirror horizontal and rotate 270 CW
+        6 = Rotate 90 CW
+        7 = Mirror horizontal and rotate 90 CW
+        8 = Rotate 270 CW
+        """
+        exiffile = BinaryFile(self.picture_path)
+        self.orientation=[1]
+        try:
+            exiftags = exifread.process_file(exiffile, details=False)
+            if 'Image Orientation' in exiftags:
+                self.orientation = exiftags['Image Orientation'].values
+        except:
+            pass     
+        #when there's a rotation the protrait images are too big, so we zoom them out
+        zoom1=int(100*(self.img_width-self.img_height-2*self.black_border)/(self.img_height+2*self.black_border))
+        if not self.keepratio:
+            zoom1=int(100*(self.img_height-2*self.black_border)/(self.img_width+2*self.black_border))
+        
+        #maybe I should do some rotatex or rotatey for the mirrors in exif, but this is a very uncommon situation...
+        if (self.orientation==[2]) or (self.orientation==[3]):            
+            cur_img.setAnimations([('conditional','effect=rotate  center=auto start=0% end=180%  condition=true',),('conditional','effect=zoom  center=auto end='+str(zoom1)+'  time=0 condition=true',)])
+        elif (self.orientation==[6]) or (self.orientation==[5]):
+            cur_img.setAnimations([('conditional','effect=rotate  center=auto start=0% end=270%  condition=true',),('conditional','effect=zoom  center=auto end='+str(zoom1)+'  time=0 condition=true',)])
+        elif (self.orientation==[8]) or (self.orientation==[7]):
+            cur_img.setAnimations([('conditional','effect=rotate  center=auto start=0% end=90%  condition=true',),('conditional','effect=zoom  center=auto end='+str(zoom1)+'  time=0 condition=true',)])
+        else:
+            cur_img.setAnimations([('conditional','effect=rotate  center=auto start=0% end=0%  condition=true',)])
+       
+        ##print(self.picture_path,"orientation",self.orientation)
+        print("orientation",self.orientation,zoom1)
+    
     def display_legend(self):
         """
         We can have some comments in the commentaires.csv file located in the same folder as pictures
@@ -312,6 +355,16 @@ class Screensaver(xbmcgui.WindowXMLDialog):
         self.abort_requested = True
         xbmc.log("Picture Grid Screensaver: Exit requested")
         self.close()
+        
+class BinaryFile(xbmcvfs.File):
+    """
+    useful for exifread
+    """
+    def read(self, numBytes: int = 0) -> bytes:
+        if not numBytes:
+            return b""
+        return bytes(self.readBytes(numBytes))
+
 
 if __name__ == "__main__":
     xbmc.log("Picture Grid Screensaver Main Started")
