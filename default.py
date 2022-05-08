@@ -297,42 +297,16 @@ class Screensaver(xbmcgui.WindowXMLDialog):
         8 = Rotate 270 CW
         """
         exiffile = BinaryFile(self.picture_path)
-        #print("exiffile",exiffile)
         self.orientation=[1]
-        #self.exif_width=self.img_width
-        #self.exif_length=self.img_height
         try:
-            #exiftags = exifread.process_file(exiffile, details=False, stop_tag='DateTimeOriginal')
-            #exiftags = exifread.process_file(exiffile, details=False, stop_tag='Image Orientation')
             exiftags = exifread.process_file(exiffile, details=False)
-            #if 'EXIF DateTimeOriginal' in exiftags:
-                #datetime = exiftags['EXIF DateTimeOriginal'].values
             if 'Image Orientation' in exiftags:
                 self.orientation = exiftags['Image Orientation'].values
-            #if 'Image ImageWidth' in exiftags:
-                #self.exif_width = exiftags['Image ImageWidth'].values
-            #if 'Image ImageLength' in exiftags:
-                #self.exif_length = exiftags['Image ImageLength'].values
-            #if 'EXIF ExifImageWidth' in exiftags:
-                #self.exif_width = exiftags['EXIF ExifImageWidth'].values
-            #if 'EXIF ExifImageLength' in exiftags:
-                #self.exif_length = exiftags['EXIF ExifImageLength'].values
-            
-            #print(exiftags)
-
-            #Image ImageWidth': (0x0100) Long=1578 @ 18, 'Image ImageLength': (0x0101) Long=2660
-            #print(datetime)
-            #zoom1=int(100*(self.img_height/self.exif_width[0]))
-            #zoom1=int(100*(9/16)*(self.exif_width[0]))
-            #zoom1=int(100*self.exif_length[0]*self.img_width/self.exif_width[0])
-            #print("orientation",self.orientation,"width",self.exif_width[0],"zoom1",zoom1)
-            
-            
         except:
             pass     
-        
-        zoom1=int(100*(self.img_width-self.img_height-2*self.black_border)/self.img_height)
-        #maybe I should do some rotatex or rotatey for the mirros in exif...
+        #when there's a rotation the protrait images are too big, so we zoom them out
+        zoom1=int(100*(self.img_width-self.img_height-2*self.black_border)/(self.img_height+2*self.black_border))
+        #maybe I should do some rotatex or rotatey for the mirrors in exif, but this is a very uncommon situation...
         if (self.orientation==[2]) or (self.orientation==[3]):            
             cur_img.setAnimations([('conditional','effect=rotate  center=auto start=0% end=180%  condition=true',),('conditional','effect=zoom  center=auto end='+str(zoom1)+'  time=0 condition=true',)])
         elif (self.orientation==[6]) or (self.orientation==[5]):
