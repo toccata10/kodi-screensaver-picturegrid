@@ -15,7 +15,7 @@ Inspiration comes from the Multi Slideshow Screensaver created by sphere. See [t
 ## Credits
 * Thanks to Zag and its [screensaver example](https://github.com/zag2me/script.screensaver.example)
 
-* And thanks to Ronie and its [screensaver.picture.slideshow](https://gitlab.com/ronie/screensaver.picture.slideshow | width=50) from which I learnt a lot a re-used some code.
+* And thanks to Ronie and its [screensaver.picture.slideshow](https://gitlab.com/ronie/screensaver.picture.slideshow) from which I learnt a lot a re-used some code.
 
 ## Installation
 You can either download the latest release as a zip, then install it with `Settings>Addons>Install from ip File`
