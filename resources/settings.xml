@@ -53,10 +53,16 @@
 					<default>true</default>
 					<control type="toggle"/>
 				</setting>
-				<setting help="" id="keepratio" label="30040" type="boolean">
+				<setting help="" id="keepratio" label="30040" type="integer">
 					<level>0</level>
-					<default>false</default>
-					<control type="toggle"/>
+					<default>1</default>
+					<control format="string" type="spinner"/>
+					<constraints>
+						<options>
+							<option label="30042">0</option>
+							<option label="30041">1</option>						
+						</options>
+					</constraints>
 				</setting>
 				<setting help="" id="grid" label="30006" type="integer">
 					<level>0</level>
@@ -68,7 +74,6 @@
 							<option label="30008">2</option>
 							<option label="30009">3</option>
 							<option label="30005">0</option>
-<!-- 							<option label="231">3</option> -->
 						</options>
 					</constraints>
 				</setting>
@@ -97,7 +102,7 @@
 						<maximum>3840</maximum>
 					</constraints>
 				</setting>
-				<setting help="30041" id="skin_virtual_height" label="30032" type="integer">
+				<setting help="30051" id="skin_virtual_height" label="30032" type="integer">
 					<level>0</level>
 					<default>720</default>
 					<control format="string" type="spinner"/>

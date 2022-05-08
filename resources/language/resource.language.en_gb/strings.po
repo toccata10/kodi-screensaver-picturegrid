@@ -97,7 +97,15 @@ msgid "Display Comments"
 msgstr ""
 
 msgctxt "#30040"
-msgid "Keep Aspect Ratio"
+msgid "Picture Aspect"
+msgstr ""
+
+msgctxt "#30041"
+msgid "Keep Original"
+msgstr ""
+
+msgctxt "#30042"
+msgid "Zoom to Fill the Box"
 msgstr ""
 
 msgctxt "#30041"

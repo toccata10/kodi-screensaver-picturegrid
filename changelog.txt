@@ -1,3 +1,6 @@
+v1.0.6
+- exif orientation implemented
+
 v1.0.5
 - reworked the commentaires.csv acces with xbmcvfs (virtual file system):
 it previously worked only locally, not if the files were stored on a smb nas

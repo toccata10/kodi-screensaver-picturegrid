@@ -58,7 +58,7 @@ class Screensaver(xbmcgui.WindowXMLDialog):
         if ADDON.getSettingInt("grid")==0:
             self.grid_size=2        
         #keep aspect ratio or scale ?
-        self.keepratio=ADDON.getSettingBool("keepratio")
+        self.keepratio=ADDON.getSettingInt("keepratio")
         #if there's a commentaires.csv file containing lines like:
         #IMG_20140823_113529~01_DxO.jpg, my wonderful comment
         self.display_comments = ADDON.getSettingBool("comments")
@@ -306,6 +306,9 @@ class Screensaver(xbmcgui.WindowXMLDialog):
             pass     
         #when there's a rotation the protrait images are too big, so we zoom them out
         zoom1=int(100*(self.img_width-self.img_height-2*self.black_border)/(self.img_height+2*self.black_border))
+        if not self.keepratio:
+            zoom1=int(100*(self.img_height-2*self.black_border)/(self.img_width+2*self.black_border))
+        
         #maybe I should do some rotatex or rotatey for the mirrors in exif, but this is a very uncommon situation...
         if (self.orientation==[2]) or (self.orientation==[3]):            
             cur_img.setAnimations([('conditional','effect=rotate  center=auto start=0% end=180%  condition=true',),('conditional','effect=zoom  center=auto end='+str(zoom1)+'  time=0 condition=true',)])
@@ -317,7 +320,7 @@ class Screensaver(xbmcgui.WindowXMLDialog):
             cur_img.setAnimations([('conditional','effect=rotate  center=auto start=0% end=0%  condition=true',)])
        
         ##print(self.picture_path,"orientation",self.orientation)
-        #print("orientation",self.orientation,"width",self.exif_width,type(self.exif_width),self.exif_length,zoom1)
+        print("orientation",self.orientation,zoom1)
     
     def display_legend(self):
         """
