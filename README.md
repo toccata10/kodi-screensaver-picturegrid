@@ -24,5 +24,6 @@ This was tested only on Linux and Android.
 
 ## Final Words
 * This is a hobby WIP project. Main goals are to learn kodi programming and to display my holliday pictures in a cool way. 
-* Exif orientation is ignored for now.
+* ~~Exif orientation is ignored for now.
+(implemented in v1.0.6)
 * I have some random slowdowns when used on my Video Fanarts collection, but I didn't spot the culprit yet.
